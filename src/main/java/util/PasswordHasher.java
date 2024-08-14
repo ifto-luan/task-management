@@ -40,7 +40,7 @@ public class PasswordHasher {
 
 	}
 
-	public boolean verifyPassword(String storedPassword, String passwordAttempt) throws NoSuchAlgorithmException {
+	public static boolean verifyPassword(String storedPassword, String passwordAttempt) throws NoSuchAlgorithmException {
 
 		String saltHex = storedPassword.substring(0, 32);
 		byte[] salt = new byte[16];

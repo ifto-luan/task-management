@@ -8,5 +8,6 @@ import model.enums.Role;
 public interface UserDao extends GenericDao<User> {
 
 	List<User> getByRole(Role role);
+	User getByUsername(String username);
 
 }

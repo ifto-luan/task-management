@@ -282,4 +282,67 @@ public class TaskDaoImpl implements TaskDao {
 
 	}
 
+	@Override
+	public List<Task> getByUserAndStatus(User u, boolean done) {
+
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		List<Task> tasks = new LinkedList<>();
+
+		try {
+
+			st = connection.prepareStatement("SELECT * FROM public.task WHERE user_id = ? AND done = ? ORDER BY id");
+			st.setInt(1, u.getId());
+			st.setBoolean(2, done);
+
+			rs = st.executeQuery();
+
+			while (rs.next()) {
+
+				tasks.add(instantiateTask(rs));
+
+			}
+
+		} catch (SQLException e) {
+
+			throw new DbException(e.getMessage());
+
+		} finally {
+
+			Db.closeStatement(st);
+			Db.closeResultSet(rs);
+
+		}
+
+		return tasks;
+
+	}
+
+	@Override
+	public void updateTaskStatusById(int taskId, boolean status) {
+
+		PreparedStatement st = null;
+
+		try {
+
+			st = connection
+					.prepareStatement("UPDATE public.task SET done = ? WHERE id = ?");
+			
+			st.setBoolean(1, status);
+			st.setInt(2, taskId);
+
+			st.executeUpdate();
+
+		} catch (SQLException e) {
+
+			throw new DbException(e.getMessage());
+
+		} finally {
+
+			Db.closeStatement(st);
+
+		}
+
+	}
+
 }

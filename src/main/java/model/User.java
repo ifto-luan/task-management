@@ -9,7 +9,7 @@ public class User {
 
 	private int id;
 	private String name;
-	private String login;
+	private String username;
 	private String password;
 	private Role role;
 	private List<Task> tasks;
@@ -18,11 +18,11 @@ public class User {
 		
 	}
 	
-	public User(int id, String name, String login, String password, Role role) {
+	public User(int id, String name, String username, String password, Role role) {
 
 		this.id = id;
 		this.name = name;
-		this.login = login;
+		this.username = username;
 		this.password = password;
 		this.role = role;
 	}
@@ -43,12 +43,12 @@ public class User {
 		this.name = name;
 	}
 
-	public String getLogin() {
-		return login;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setLogin(String login) {
-		this.login = login;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getPassword() {
@@ -78,7 +78,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return id + " - " + name + " - " + login + " - " + password + " - " + role;
+		return id + " - " + name + " - " + username + " - " + password + " - " + role;
 	}
 
 }

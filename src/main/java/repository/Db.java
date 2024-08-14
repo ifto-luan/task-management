@@ -1,7 +1,7 @@
 package repository;
 
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -23,12 +23,17 @@ public class Db {
 
 				String url = props.getProperty("dburl");
 
+				Class.forName("org.postgresql.Driver");
 				connection = DriverManager.getConnection(url, props);
 
 			} catch (SQLException e) {
 				
 				throw new DbException(e.getMessage());
 			
+			} catch (ClassNotFoundException e) {
+				
+				throw new DbException(e.getMessage());
+				
 			}
 
 		}
@@ -39,10 +44,10 @@ public class Db {
 
 	private static Properties loadProperties() {
 
-		try (FileInputStream fs = new FileInputStream("./src/main/java/resources/db.properties")) {
-
+		try (InputStream is = Db.class.getClassLoader().getResourceAsStream("./resources/db.properties")) {
+			
 			Properties props = new Properties();
-			props.load(fs);
+			props.load(is);
 			return props;
 
 		} catch (IOException e) {

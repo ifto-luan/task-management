@@ -1,6 +1,6 @@
 # Project Ignores Files 
 
-/src/main/java/resources
+db.properties
 
 # Maven
 .mvn

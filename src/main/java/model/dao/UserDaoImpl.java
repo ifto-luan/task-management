@@ -30,7 +30,7 @@ public class UserDaoImpl implements UserDao {
 		try {
 
 			st = connection
-					.prepareStatement("SELECT u.id, u.name, u.login, u.password, r.description AS role_description "
+					.prepareStatement("SELECT u.id, u.name, u.username, u.password, r.description AS role_description "
 							+ "FROM public.user u " + "INNER JOIN public.role r ON r.id = u.role_id "
 							+ "WHERE u.id = ? " + "ORDER BY u.id");
 
@@ -69,7 +69,7 @@ public class UserDaoImpl implements UserDao {
 		try {
 
 			st = connection
-					.prepareStatement("SELECT u.id, u.name, u.login, u.password, r.description AS role_description "
+					.prepareStatement("SELECT u.id, u.name, u.username, u.password, r.description AS role_description "
 							+ "FROM public.user u " + "INNER JOIN public.role r ON r.id = u.role_id "
 							+ "ORDER BY u.id");
 
@@ -104,12 +104,12 @@ public class UserDaoImpl implements UserDao {
 		try {
 
 			st = connection.prepareStatement(
-					"INSERT INTO public.user (name, login, password, role_id) "
+					"INSERT INTO public.user (name, username, password, role_id) "
 							+ "VALUES (? , ?, ?, (SELECT id FROM role WHERE description = ?))",
 					Statement.RETURN_GENERATED_KEYS);
 
 			st.setString(1, user.getName());
-			st.setString(2, user.getLogin());
+			st.setString(2, user.getUsername());
 			st.setString(3, user.getPassword());
 			st.setString(4, user.getRole().toString());
 
@@ -153,11 +153,11 @@ public class UserDaoImpl implements UserDao {
 
 		try {
 
-			st = connection.prepareStatement("UPDATE public.user " + "SET name = ?, " + "login = ?, " + "password = ?, "
+			st = connection.prepareStatement("UPDATE public.user " + "SET name = ?, " + "username = ?, " + "password = ?, "
 					+ "role_id = (SELECT r.id FROM public.role r WHERE r.description = ?) " + "WHERE id = ?");
 
 			st.setString(1, user.getName());
-			st.setString(2, user.getLogin());
+			st.setString(2, user.getUsername());
 			st.setString(3, user.getPassword());
 			st.setString(4, user.getRole().toString());
 			st.setInt(5, user.getId());
@@ -211,7 +211,7 @@ public class UserDaoImpl implements UserDao {
 		try {
 
 			st = connection
-					.prepareStatement("SELECT u.id, u.name, u.login, u.password, r.description AS role_description "
+					.prepareStatement("SELECT u.id, u.name, u.username, u.password, r.description AS role_description "
 							+ "FROM public.user u INNER JOIN public.role r ON r.id = u.role_id "
 							+ "WHERE r.description = ? " + "ORDER BY u.id");
 
@@ -247,7 +247,7 @@ public class UserDaoImpl implements UserDao {
 
 			u.setId(rs.getInt("id"));
 			u.setName(rs.getString("name"));
-			u.setLogin(rs.getString("login"));
+			u.setUsername(rs.getString("username"));
 			u.setPassword(rs.getString("password"));
 			u.setRole(Role.getRole(rs.getString("role_description")));
 			
@@ -259,6 +259,44 @@ public class UserDaoImpl implements UserDao {
 
 		return u;
 
+	}
+
+	@Override
+	public User getByUsername(String username) {
+		
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		try {
+
+			st = connection
+					.prepareStatement("SELECT u.id, u.name, u.username, u.password, r.description AS role_description "
+							+ "FROM public.user u " + "INNER JOIN public.role r ON r.id = u.role_id "
+							+ "WHERE u.username = ? " + "ORDER BY u.id");
+
+			st.setString(1, username);
+
+			rs = st.executeQuery();
+
+			if (rs.next()) {
+
+				return instantiateUser(rs);
+
+			}
+
+			return null;
+
+		} catch (SQLException e) {
+
+			throw new DbException(e.getMessage());
+
+		} finally {
+
+			Db.closeStatement(st);
+			Db.closeResultSet(rs);
+
+		}
+		
 	}
 
 }
