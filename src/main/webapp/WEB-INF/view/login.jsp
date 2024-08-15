@@ -8,8 +8,8 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/resources/css/styles.css">
-<link rel="icon" href="${pageContext.request.contextPath}/resources/favicon.ico" type="image/x-icon">
+	href="${pageContext.request.contextPath}/assets/css/styles.css">
+<link rel="icon" href="${pageContext.request.contextPath}/assets/favicon.ico" type="image/x-icon">
 <title>Task Manager | Welcome!</title>
 </head>
 <body>

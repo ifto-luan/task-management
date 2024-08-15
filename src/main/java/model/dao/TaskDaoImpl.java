@@ -236,7 +236,7 @@ public class TaskDaoImpl implements TaskDao {
 	}
 
 	@Override
-	public void delete(Task t) {
+	public void delete(int taskId) {
 
 		PreparedStatement st = null;
 
@@ -244,7 +244,7 @@ public class TaskDaoImpl implements TaskDao {
 
 			st = connection.prepareStatement("DELETE from public.task WHERE id = ?");
 
-			st.setInt(1, t.getId());
+			st.setInt(1, taskId);
 
 			st.executeUpdate();
 

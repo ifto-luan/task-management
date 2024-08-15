@@ -177,7 +177,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public void delete(User u) {
+	public void delete(int userId) {
 
 		PreparedStatement st = null;
 
@@ -185,7 +185,7 @@ public class UserDaoImpl implements UserDao {
 
 			st = connection.prepareStatement("DELETE from public.user WHERE id = ?");
 
-			st.setInt(1, u.getId());
+			st.setInt(1, userId);
 
 			st.executeUpdate();
 

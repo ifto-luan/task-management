@@ -8,6 +8,6 @@ public interface GenericDao<T> {
 	List<T> getAll();
 	void insert(T reg);
 	void update(T reg);
-	void delete(T reg);
+	void delete(int id);
 	
 }
