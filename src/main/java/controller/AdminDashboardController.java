@@ -14,18 +14,22 @@ import model.User;
 import model.dao.DaoFactory;
 import model.dao.TaskDao;
 import model.dao.UserDao;
+import model.enums.Role;
 
-@WebServlet("/home")
-public class HomeController extends HttpServlet {
+@WebServlet("/admin/home")
+public class AdminDashboardController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-	private TaskDao taskDao;
+
 	private UserDao userDao;
+	private TaskDao taskDao;
 
 	@Override
 	public void init() throws ServletException {
-		taskDao = DaoFactory.createTaskDao();
+
 		userDao = DaoFactory.createUserDao();
+		taskDao = DaoFactory.createTaskDao();
+
 	}
 
 	@Override
@@ -46,7 +50,7 @@ public class HomeController extends HttpServlet {
 			taskDao.insert(t);
 
 			resp.setStatus(HttpServletResponse.SC_OK);
-			resp.getWriter().print(t.getId());
+			resp.getWriter().print(u.getName() + "," + t.getId());
 
 		} else if ("markAsDone".equals(action)) {
 
@@ -81,18 +85,21 @@ public class HomeController extends HttpServlet {
 
 		if (session != null && user != null) {
 
-			List<Task> pendingTasks = taskDao.getByUserAndStatus(user, false);
-			List<Task> doneTasks = taskDao.getByUserAndStatus(user, true);
+			if (user.getRole() == Role.ADMIN) {
 
-			req.setAttribute("pendingTasks", pendingTasks);
-			req.setAttribute("doneTasks", doneTasks);
+				List<Task> pendingTasks = taskDao.getByStatus(false);
+				List<Task> doneTasks = taskDao.getByStatus(true);
 
-			req.getRequestDispatcher("/WEB-INF/view/home.jsp").forward(req, resp);
+				req.setAttribute("pendingTasks", pendingTasks);
+				req.setAttribute("doneTasks", doneTasks);
 
-		} else {
+				req.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(req, resp);
 
-			resp.sendRedirect("login");
+			} else {
 
+				resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You do not have permission to access this resource");
+				return;
+			}
 		}
 
 	}

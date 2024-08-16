@@ -209,7 +209,7 @@ public class TaskDaoImpl implements TaskDao {
 
 		try {
 
-			st = connection.prepareStatement("SELECT * FROM public.task WHERE done = ? ORDER BY id");
+			st = connection.prepareStatement("SELECT * FROM public.task WHERE done = ? ORDER BY user_id, id");
 			st.setBoolean(1, done);
 
 			rs = st.executeQuery();

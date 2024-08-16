@@ -76,6 +76,18 @@ public class User {
 		this.tasks = tasks;
 	}
 
+	public boolean isAdmin() {
+		return role == Role.ADMIN;
+	}
+	
+	public boolean isSupervisor() {
+		return role == Role.SUPERVISOR;
+	}
+	
+	public boolean isNormalUser() {
+		return role == Role.USER;
+	}
+	
 	@Override
 	public String toString() {
 		return id + " - " + name + " - " + username + " - " + password + " - " + role;

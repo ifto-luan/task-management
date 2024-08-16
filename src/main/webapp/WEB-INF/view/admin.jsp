@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script src="${pageContext.request.contextPath}/assets/js/tasks.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/adminHome.js"></script>
 <link
 	href="${pageContext.request.contextPath}/assets/css/fontawesome.css"
 	rel="stylesheet" />
@@ -14,7 +14,7 @@
 <link href="${pageContext.request.contextPath}/assets/css/solid.css"
 	rel="stylesheet" />
 <link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/assets/css/home.css">
+	href="${pageContext.request.contextPath}/assets/css/admin.css">
 <link rel="icon"
 	href="${pageContext.request.contextPath}/assets/favicon.ico"
 	type="image/x-icon">
@@ -56,8 +56,11 @@
 							<i class="fa-solid fa-check"></i>
 						</button>
 					</div>
-					<div class="task-description">
+					<div class="task-user">
 						<input type="hidden" value="${task.id}">
+						<p>${task.user.name}</p>
+					</div>
+					<div class="task-description">
 						<p>${task.description}</p>
 					</div>
 					<div class="task-delete">
@@ -77,8 +80,11 @@
 							<i class="fa-solid fa-rotate-right"></i>
 						</button>
 					</div>
-					<div class="task-description">
+					<div class="task-user">
 						<input type="hidden" value="${task.id}">
+						<p style="text-decoration: line-through">${task.user.name}</p>
+					</div>
+					<div class="task-description">
 						<p style="text-decoration: line-through">${task.description}</p>
 					</div>
 					<div class="task-delete">

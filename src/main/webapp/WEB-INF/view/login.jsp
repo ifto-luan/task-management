@@ -16,9 +16,15 @@
 
 	<header>
 	
-		<c:if test="${not empty errorMessage}">		
+		<c:if test="${not empty errorMessage and empty param.successMessage}">		
 			<div class="error-message">
 				<p>${errorMessage}</p>
+			</div>
+		</c:if>
+		
+		<c:if test="${not empty param.successMessage}">		
+			<div class="success-message">
+				<p>${param.successMessage}</p>
 			</div>
 		</c:if>
 	
@@ -48,7 +54,7 @@
 			</div>
 
 			<div class="form-options">
-				<a href="register">Sign-up</a> <a href="update-password">Forgot
+				<a href="register">Sign-up</a> <a href="forgotPassword">Forgot
 					your password?</a>
 			</div>
 

@@ -11,12 +11,22 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.User;
 import model.dao.DaoFactory;
+import model.dao.UserDao;
 import util.PasswordHasher;
 
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
+
+	private UserDao userDao;
+
+	@Override
+	public void init() throws ServletException {
+
+		userDao = DaoFactory.createUserDao();
+
+	}
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -35,7 +45,7 @@ public class LoginController extends HttpServlet {
 
 			if (username != null && !username.isBlank() && password != null & !password.isBlank()) {
 
-				User u = DaoFactory.createUserDao().getByUsername(username);
+				User u = userDao.getByUsername(username);
 
 				if (u != null) {
 
@@ -44,7 +54,17 @@ public class LoginController extends HttpServlet {
 						if (PasswordHasher.verifyPassword(u.getPassword(), password)) {
 
 							session.setAttribute("user", u);
-							response.sendRedirect("home");
+							
+							if (u.isAdmin()) {
+								
+								response.sendRedirect("admin/home");
+								
+							} else {
+								
+								response.sendRedirect("home");								
+								
+							}
+							
 
 						} else {
 
